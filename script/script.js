@@ -1,4 +1,3 @@
-// Array data pelanggan aktif
 let pelangganAktif = [
   ["alviana", "ketandan", "0813"],
   ["adhel", "maospati", "0824"],
@@ -6,10 +5,9 @@ let pelangganAktif = [
   ["aura", "ngariboyo", "0843"],
 ];
 
-// Array untuk merekap pelanggan dismantle
 let rekapDismantle = [];
 
-// Fungsi untuk menampilkan semua data pelanggan aktif
+// Fungsi menampilkan semua data pelanggan aktif
 function renderPelangganAktif() {
   let pelangganAktifHtml = document.getElementById("pelangganAktif");
   pelangganAktifHtml.innerHTML = "";
@@ -35,8 +33,9 @@ function renderPelangganAktif() {
   });
 }
 
-// Fungsi untuk menambah pelanggan
-document.getElementById("formPelangganBaru").addEventListener("submit", (e) => {
+// Fungsi menambah pelanggan
+let submit = document.getElementById("btnKirimBaru")
+submit.addEventListener("click", (e) => {
   e.preventDefault();
 
   let namaPelanggan = document.getElementById("namaPelanggan").value;
@@ -50,9 +49,11 @@ document.getElementById("formPelangganBaru").addEventListener("submit", (e) => {
     }
   });
 
-  if (nikExists) {
+  if (namaPelanggan.length === 0 || nikPelanggan.length === 0 || alamatPelanggan.length === 0) {
+    alert(`Anda belum memasukkan data`);
+  } else if(nikExists){
     alert(`NIK ${nikPelanggan} sudah terdaftar, coba masukkan data lainnya`);
-  } else {
+  }else{
     pelangganAktif.push([namaPelanggan, alamatPelanggan, nikPelanggan]);
     renderPelangganAktif();
   }
@@ -74,7 +75,7 @@ function dismantlePelanggan(i) {
 
 function renderRekapDismantle() {
   let pelangganDismantleHtml = document.getElementById("pelangganDismantle");
-  pelangganDismantleHtml.innerHTML = ""; // Bersihkan konten sebelumnya
+  pelangganDismantleHtml.innerHTML = ""; 
 
   rekapDismantle.forEach((item, i) => {
     let pelanggan = `
