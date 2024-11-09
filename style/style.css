@@ -1,4 +1,11 @@
 body {
-  background-color: black;
+  background-color: rgb(137, 138, 146);
   color: white;
+  width: 80%;
+  margin: 0 auto;
+  padding-top: 50px;
+}
+
+#pelangganDismantle{
+  margin-top: 50px;
 }
