@@ -1,67 +1,148 @@
-// Queue untuk pelanggan aktif
 let pelangganAktif = [
-  ["Budi", "Jl. Merdeka No.1", "1234567890"],
-  ["Siti", "Jl. Kemerdekaan No.2", "0987654321"]
-]; // Inisialisasi dengan beberapa data awal
+  ["sasa", "Jl. Proklamasi No.1", "1122334411"],
+  ["ratna", "Jl. Pahlawan No.2", "5566778822"],
+  ["rura", "Jl. Proklamasi No.8", "1122334423"],
+  ["hilmi", "Jl. Pahlawan No.9", "5566778445"],
+  ["kasim", "Jl. Pahlawan No.10", "5566778499"]
+]; 
 
-// Stack untuk rekapDismantle
-let rekapDismantle = [
-  ["Andi", "Jl. Proklamasi No.3", "1122334455"],
-  ["Dewi", "Jl. Pahlawan No.4", "5566778899"]
-]; // Inisialisasi dengan beberapa data awal
+// fungsi queue (fitur tambah pelanggan)
+let back = pelangganAktif.length
+let front = 0
 
-// Fungsi queue untuk pelanggan aktif
 function isQueueEmpty() {
-  return pelangganAktif.length === 0;
+  return back === 0;
 }
 
-function countQueue() {
-  return pelangganAktif.length;
-}
+// function countQueue() {
+//   if(isQueueEmpty()){
+//     return 0 
+//   } else {
+//     return back
+//   }
+// }
+
+// function destroyQueue(){
+//   for (let i = 0; i < pelangganAktif.length; i++) {
+//     pelangganAktif[i] = ''    
+//   }
+//   front = 0
+//   back = 0
+// }
 
 function enqueueArray(data) {
-  pelangganAktif.push(data);
+  if (!isQueueEmpty()){
+    pelangganAktif[pelangganAktif.length] = data;
+    back++
+  } else {
+    pelangganAktif[0] = data
+    front++
+    back++
+  }
+  sortPelangganAktifByName()
 }
 
-function dequeueArray() {
+
+function dequeuePelangganAktif(i) {
   if (!isQueueEmpty()) {
-    return pelangganAktif.shift();
+    for (let j = i; j < back - 1; j++) {
+      pelangganAktif[j] = pelangganAktif[j + 1];
+    }
+    // pelangganAktif[back - 1] = '';
+    pelangganAktif.length = back - 1; 
+    back--; 
   } else {
-    console.log("Data pelanggan kosong!");
-    return null;
+    alert("Data Masih kosong");
   }
 }
 
-// Fungsi stack untuk rekapDismantle
+
+
+
+
+let rekapDismantle = [
+  ["Andi", "Jl. Proklamasi No.3", "1122334455"],
+  ["Dewi", "Jl. Pahlawan No.4", "5566778899"],
+  ["anan", "Jl. Proklamasi No.5", "1122334412"],
+  ["manda", "Jl. Pahlawan No.6", "5566778439"],
+  ["nando", "Jl. Pahlawan No.7", "5566778431"]
+];
+
+// Fungsi stack (fitur dismantle)
+let topStack = 0
+
 function isStackEmpty() {
   return rekapDismantle.length === 0;
 }
 
 function countStack() {
-  return rekapDismantle.length;
+  return rekapDismantle.topStack;
 }
 
 function pushArray(data) {
-  rekapDismantle.unshift(data); // Menambah data di depan array untuk simulasi stack
-}
-
-function popArray() {
-  if (!isStackEmpty()) {
-    return rekapDismantle.shift();
-  } else {
-    console.log("Data stack kosong!");
-    return null;
+  if(!isStackEmpty()){
+        rekapDismantle[rekapDismantle.length] = data;
+        topStack++
+  }else{
+    rekapDismantle[0] = data
   }
 }
 
-// Fungsi untuk menampilkan data pelanggan aktif
+
+// fungsi bubble sort, mengurutkan alfabet nama pelanggan aktif
+function sortPelangganAktifByName() {
+  let length = pelangganAktif.length;
+  for (let i = 0; i < length - 1; i++) {
+    for (let j = 0; j < length - i - 1; j++) {
+      if (pelangganAktif[j][0].localeCompare(pelangganAktif[j + 1][0]) > 0) {
+        let temp = pelangganAktif[j];
+        pelangganAktif[j] = pelangganAktif[j + 1];
+        pelangganAktif[j + 1] = temp;
+      }
+    }
+  }
+} 
+
+
+
+// fungsi linier search, mencari data yang diketikkan
+function searchPelanggan(targetName) {
+  let found = false;
+  let result = null;
+
+  for (let i = 0; i < pelangganAktif.length; i++) {
+    if (pelangganAktif[i][0].toLowerCase() === targetName.toLowerCase()) {
+      result = pelangganAktif[i];
+      found = true;
+      break; 
+    }
+  }
+  
+  if (!found) {
+    alert(`Pelanggan dengan nama "${targetName}" tidak ditemukan.`);
+  } else {
+    alert(`Ditemukan pelanggan:\nNama: ${result[0]}, Alamat: ${result[1]}, NIK: ${result[2]}`);
+  }
+}
+
+let formCariPelanggan = document.getElementById("formCariPelanggan");
+let searchButton = document.getElementById("btnCariPelanggan");
+
+formCariPelanggan.addEventListener("submit", (e) => {
+  e.preventDefault(); 
+  let namaCari = document.getElementById("namaCariPelanggan").value;
+  searchPelanggan(namaCari);
+  formCariPelanggan.reset();
+});
+
+
+
 function renderPelangganAktif() {
   let pelangganAktifHtml = document.getElementById("pelangganAktif");
   pelangganAktifHtml.innerHTML = "";
 
   for (let i = 0; i < pelangganAktif.length; i++) {
     let item = pelangganAktif[i];
-    if (item) {
       let pelanggan = `
       <div class="accordion-item">
         <h2 class="accordion-header">
@@ -79,11 +160,12 @@ function renderPelangganAktif() {
       </div>
       `;
       pelangganAktifHtml.insertAdjacentHTML("beforeend", pelanggan);
-    }
   }
 }
 
-// Fungsi untuk menambahkan pelanggan baru
+
+
+// fungsi tambah data
 let submit = document.getElementById("btnKirimBaru");
 submit.addEventListener("click", (e) => {
   e.preventDefault();
@@ -107,7 +189,9 @@ submit.addEventListener("click", (e) => {
   document.getElementById("formPelangganBaru").reset();
 });
 
-// Fungsi untuk menghapus pelanggan pada indeks tertentu
+
+
+// Fungsi menghapus pelanggan
 function dismantlePelanggan(i) {
   if (i < 0 || i >= pelangganAktif.length) {
     alert("Indeks tidak valid!");
@@ -117,11 +201,10 @@ function dismantlePelanggan(i) {
   let [nama, alamat, nik] = pelangganAktif[i];
   alert(`Berhasil menghapus pelanggan dengan NAMA ${nama}, ALAMAT ${alamat}, NIK ${nik}`);
 
-  // Masukkan data pelanggan ke rekapDismantle di depan (menggunakan stack)
   pushArray([nama, alamat, nik]);
 
-  // Hapus pelanggan dari queue pelangganAktif
-  pelangganAktif.splice(i, 1);
+  // pelangganAktif.splice(i, 1);
+  dequeuePelangganAktif(i)
 
   renderPelangganAktif();
   renderRekapDismantle();
